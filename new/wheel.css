@@ -1,0 +1,39 @@
+@keyframes rotation{
+    0%{
+        rotate: 0deg;
+    }
+    100%{
+        rotate: 360deg;
+    }
+}
+
+.wheelred
+{
+    display: flex;
+    margin-top: 20px;
+    gap: 10px;
+   justify-content: center;
+   align-items: center;
+}
+
+.btn{
+    height: 40px;
+    width: 50px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    color: #fff;
+    cursor: pointer;
+}
+
+.on{
+    background-color: green;
+}
+
+.off{
+    background-color: red;
+}
+
+.wheel{
+    margin-left: 20px;
+}

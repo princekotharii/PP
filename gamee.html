@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Number Match — User vs Computer</title>
+  <style>
+    :root { --bg:#0f172a; --card:#111827; --text:#e5e7eb; --muted:#9ca3af; --accent:#22c55e; --danger:#ef4444; --brand:#3b82f6; }
+    *{box-sizing:border-box} body{
+      margin:0; font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial;
+      background:linear-gradient(180deg,#0b1024,#0f172a); color:var(--text); min-height:100dvh; display:flex; align-items:center; justify-content:center; padding:24px;
+    }
+    .app{width:100%; max-width:720px; background:var(--card); border-radius:20px; padding:24px; box-shadow:0 10px 30px rgba(0,0,0,.35); border:1px solid #1f2937}
+    h1{margin:0 0 12px; font-size:22px; font-weight:700; letter-spacing:.3px}
+    .sub{color:var(--muted); margin-bottom:20px; font-size:14px}
+    .row{display:flex; gap:12px; flex-wrap:wrap}
+    .card{flex:1; min-width:240px; background:#0b1220; border:1px solid #1f2937; border-radius:16px; padding:16px}
+    .label{font-size:12px; color:var(--muted); text-transform:uppercase; letter-spacing:.08em}
+    .big{font-size:40px; font-weight:800; margin:6px 0 0}
+    .vs{align-self:center; font-weight:700; color:#a5b4fc}
+    .controls{display:flex; gap:12px; flex-wrap:wrap; margin:14px 0}
+    select,input[type=number]{background:#0a1020; color:var(--text); border:1px solid #1f2937; border-radius:10px; padding:10px 12px; outline:none}
+    button{border:none; border-radius:12px; padding:12px 16px; font-weight:700; cursor:pointer}
+    .btn{background:var(--brand); color:white}
+    .btn:disabled{opacity:.6; cursor:not-allowed}
+    .btn-reset{background:#334155; color:#e2e8f0}
+    .scores{display:flex; gap:12px; margin-top:8px}
+    .score{flex:1; background:#0a1221; border:1px dashed #1f2937; border-radius:14px; padding:12px}
+    .score b{font-size:20px}
+    .result{margin-top:14px; padding:12px; border-radius:12px; background:#0a1221; border:1px solid #1f2937; min-height:48px; display:flex; align-items:center; justify-content:space-between; gap:8px}
+    .badge{padding:6px 10px; border-radius:999px; font-size:12px; font-weight:800}
+    .good{background:rgba(34,197,94,.15); color:var(--accent); border:1px solid rgba(34,197,94,.3)}
+    .bad{background:rgba(239,68,68,.15); color:var(--danger); border:1px solid rgba(239,68,68,.3)}
+    .log{margin-top:14px; max-height:160px; overflow:auto; font-family:ui-monospace, SFMono-Regular, Menlo, monospace; font-size:13px; color:#cbd5e1; background:#0b1120; border:1px solid #1f2937; border-radius:12px; padding:10px; white-space:pre-wrap}
+    .footer{margin-top:12px; font-size:12px; color:var(--muted)}
+  </style>
+</head>
+<body>
+  <main class="app">
+    <h1>🔢 Number Match — User vs Computer</h1>
+    <div class="sub">Both sides roll a number. If they match, <b>user</b> scores, else <b>computer</b> scores. First to target wins.</div>
+
+    <section class="controls">
+      <label>Range:
+        <select id="range">
+          <option value="5">1–5</option>
+          <option value="10" selected>1–10</option>
+          <option value="20">1–20</option>
+        </select>
+      </label>
+      <label>Target Score:
+        <input id="target" type="number" min="1" max="50" value="5" />
+      </label>
+      <button id="play" class="btn">🎲 Play Round</button>
+      <button id="auto" class="btn">▶️ Auto</button>
+      <button id="reset" class="btn-reset">↺ Reset</button>
+    </section>
+
+    <section class="row">
+      <div class="card">
+        <div class="label">User Pick</div>
+        <div id="userPick" class="big">–</div>
+      </div>
+      <div class="vs">VS</div>
+      <div class="card">
+        <div class="label">Computer Pick</div>
+        <div id="compPick" class="big">–</div>
+      </div>
+    </section>
+
+    <section class="scores">
+      <div class="score"><div class="label">User Score</div><b id="userScore">0</b></div>
+      <div class="score"><div class="label">Computer Score</div><b id="compScore">0</b></div>
+      <div class="score"><div class="label">Target</div><b id="targetShow">5</b></div>
+    </section>
+
+    <div id="result" class="result">
+      <span class="badge">Ready</span>
+      <span id="statusText"></span>
+    </div>
+
+    <div id="log" class="log"></div>
+
+    <div class="footer">Tip: change the range/target, then hit Play or Auto. Reset anytime.</div>
+  </main>
+
+  <script>
+    // State
+    let userScore = 0, compScore = 0, playing = false, autoTimer = null;
+
+    // Elements
+    const els = {
+      range: document.getElementById('range'),
+      target: document.getElementById('target'),
+      targetShow: document.getElementById('targetShow'),
+      play: document.getElementById('play'),
+      auto: document.getElementById('auto'),
+      reset: document.getElementById('reset'),
+      userPick: document.getElementById('userPick'),
+      compPick: document.getElementById('compPick'),
+      userScore: document.getElementById('userScore'),
+      compScore: document.getElementById('compScore'),
+      result: document.getElementById('result'),
+      statusText: document.getElementById('statusText'),
+      log: document.getElementById('log'),
+    };
+
+    // Helpers
+    const rand = (max) => Math.floor(Math.random() * max) + 1;
+    const setBadge = (text, ok=true) => {
+      const badge = document.createElement('span');
+      badge.className = 'badge ' + (ok ? 'good' : 'bad');
+      badge.textContent = text;
+      els.result.replaceChildren(badge, els.statusText);
+    };
+    const updateScores = () => {
+      els.userScore.textContent = userScore;
+      els.compScore.textContent = compScore;
+      els.targetShow.textContent = Number(els.target.value) || 5;
+    };
+    const appendLog = (line) => {
+      els.log.textContent = (line + '\n' + els.log.textContent).slice(0, 4000);
+    };
+    const lock = (v) => { els.play.disabled = v; els.reset.disabled = v; els.range.disabled = v; els.target.disabled = v; };
+
+    // Core round
+    async function playRound() {
+      if (playing) return;
+      playing = true; lock(true);
+      const max = Number(els.range.value) || 10;
+
+      // mini animation
+      const animMs = 600; const start = performance.now();
+      const anim = setInterval(() => {
+        els.userPick.textContent = rand(max);
+        els.compPick.textContent = rand(max);
+      }, 60);
+
+      await new Promise(r => setTimeout(r, animMs));
+      clearInterval(anim);
+
+      const u = rand(max);
+      const c = rand(max);
+      els.userPick.textContent = u;
+      els.compPick.textContent = c;
+
+      if (u === c) {
+        userScore++;
+        setBadge('Match! +1 User', true);
+        els.statusText.textContent = `Both picked ${u}.`;
+      } else {
+        compScore++;
+        setBadge('No match. +1 Computer', false);
+        els.statusText.textContent = `User ${u} vs Computer ${c}.`;
+      }
+
+      updateScores();
+      appendLog(`[${new Date().toLocaleTimeString()}] U:${u} C:${c}  →  Score U:${userScore} | C:${compScore}`);
+
+      // Check win
+      const target = Number(els.target.value) || 5;
+      if (userScore >= target || compScore >= target) {
+        const userWon = userScore > compScore;
+        setBadge(userWon ? '🏆 User Wins' : '🤖 Computer Wins', userWon);
+        els.statusText.textContent = `Final: U:${userScore} — C:${compScore} (target ${target})`;
+        stopAuto();
+        els.play.disabled = true; // freeze until reset
+        lock(false);
+        playing = false;
+        return;
+      }
+
+      lock(false);
+      playing = false;
+    }
+
+    // Auto mode
+    function startAuto() {
+      if (autoTimer) return;
+      els.auto.textContent = '⏸️ Pause';
+      autoTimer = setInterval(playRound, 900);
+    }
+    function stopAuto() {
+      if (!autoTimer) return;
+      clearInterval(autoTimer);
+      autoTimer = null;
+      els.auto.textContent = '▶️ Auto';
+    }
+
+    // Reset
+    function resetGame() {
+      stopAuto();
+      userScore = 0; compScore = 0;
+      els.userPick.textContent = '–';
+      els.compPick.textContent = '–';
+      els.statusText.textContent = '';
+      setBadge('Ready', true);
+      updateScores();
+      els.play.disabled = false;
+    }
+
+    // Events
+    els.play.addEventListener('click', playRound);
+    els.auto.addEventListener('click', () => autoTimer ? stopAuto() : startAuto());
+    els.reset.addEventListener('click', resetGame);
+    els.target.addEventListener('input', updateScores);
+    els.range.addEventListener('change', resetGame);
+
+    // Init
+    updateScores();
+  </script>
+</body>
+</html>
