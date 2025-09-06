@@ -16,7 +16,7 @@ function playGame(userChoice) {
   ) {
     winner = "You Win! 🎉";
   } else {
-    winner = "Computer Wins! 🤖";
+    winner = "Computer Wins!🤖 ";
   }
 
   document.getElementById("winner").innerText = "Result: " + winner;
