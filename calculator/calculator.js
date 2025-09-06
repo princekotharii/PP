@@ -19,4 +19,3 @@ function calculate() {
     display.value = "Error";
   }
 }
-+9--
