@@ -1,43 +1,41 @@
-const input = document.querySelector(".input")
-const send = document.querySelector(".button")
-const p = document.querySelector(".p")
-const h2 = document.querySelector(".number")
-const count = document.querySelector(".count")
+let randomNumber = Math.floor(Math.random() * 100) + 1;
+let correctCount = 0;
+let wrongCount = 0;
 
-let cNumber = '0'
-p.textContent = "Please enter a number between 1 to 100."
-count.innerText = `Count: ${cNumber}`
+const input = document.getElementById("userGuess");
+const button = document.getElementById("guessBtn");
+const message = document.getElementById("message");
+const correctDisplay = document.getElementById("correct");
+const wrongDisplay = document.getElementById("wrong");
 
-let rNumber = Math.floor(Math.random()*100)+1
-console.log(rNumber)
+function checkGuess() {
+  let guess = parseInt(input.value);
 
-function guess(){
-    
-    let number = parseInt(input.value, 10)
-    if (isNaN(number)) {
-        p.textContent = "Please enter a number between 1 to 100."
-        p.style.color = ""
-    } else {
-        if(number == rNumber) {
-            p.textContent = "You won!🎉"
-            p.style.color = "green"
-            p.break;
-            h2.textContent = `The number is ${rNumber}`
-        } else if(number > rNumber) {
-            p.textContent = "Your number is Big"
-            p.style.color = ""
-        } else {
-            p.textContent = "Your number is Small"
-            p.style.color = ""
-        }
-    }
-    if(isNaN(number)) {
-        count.innerText = `Count: ${cNumber}`
-    } else {
-        cNumber++
-        count.innerText = `Count: ${cNumber}`
-    }
-    input.value = ''
+  if (isNaN(guess) || guess < 1 || guess > 100) {
+    message.textContent = "⚠️ Please enter a valid number between 1 and 100.";
+    message.style.color = "red";
+    return;
+  }
+
+  if (guess === randomNumber) {
+    message.textContent = `🎉 Correct! The number was ${randomNumber}`;
+    message.style.color = "green";
+    correctCount++;
+    correctDisplay.textContent = correctCount;
+    randomNumber = Math.floor(Math.random() * 100) + 1; // reset game
+  } else if (guess > randomNumber) {
+    message.textContent = "📉 Try a smaller number.";
+    message.style.color = "blue";
+    wrongCount++;
+    wrongDisplay.textContent = wrongCount;
+  } else {
+    message.textContent = "📈 Try a bigger number.";
+    message.style.color = "blue";
+    wrongCount++;
+    wrongDisplay.textContent = wrongCount;
+  }
+
+  input.value = "";
 }
 
-send.addEventListener("click", guess)
+button.addEventListener("click", checkGuess);

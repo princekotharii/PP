@@ -2,19 +2,31 @@ body {
   font-family: Arial, sans-serif;
   text-align: center;
   margin-top: 50px;
-  background: #f4f4f9;
+  background: linear-gradient(135deg, #f4f4f9, #dce6f9);
 }
 
 h1 {
   color: #333;
+  margin-bottom: 10px;
+}
+
+p {
+  font-size: 18px;
 }
 
 input {
   padding: 10px;
   font-size: 16px;
   margin: 10px;
-  width: 100px;
+  width: 120px;
   text-align: center;
+  border: 2px solid #007bff;
+  border-radius: 5px;
+  outline: none;
+}
+
+input:focus {
+  border-color: #0056b3;
 }
 
 button {
@@ -24,7 +36,8 @@ button {
   border: none;
   background: #007bff;
   color: white;
-  border-radius: 5px;
+  border-radius: 8px;
+  transition: 0.2s;
 }
 
 button:hover {
@@ -33,14 +46,17 @@ button:hover {
 
 #message {
   margin-top: 20px;
-  font-size: 18px;
+  font-size: 20px;
   font-weight: bold;
+  min-height: 30px;
 }
 
 #scoreboard {
   margin-top: 30px;
   font-size: 18px;
+  background: white;
+  display: inline-block;
+  padding: 15px 30px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
-
-
-
