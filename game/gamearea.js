@@ -1,30 +1,53 @@
+// // Check login state (saved in localStorage)
+// let isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
 
-const loginModal = document.getElementById("loginModal");
-const signupModal = document.getElementById("signupModal");
-const loginBtn = document.querySelector(".login");
-const signupBtn = document.querySelector(".signup");
-const closeBtns = document.querySelectorAll(".close");
+// const gameContainer = document.getElementById("game-container");
+// const authButtons = document.getElementById("auth-buttons");
+// const logoutBtn = document.getElementById("logout-btn");
 
-loginBtn.addEventListener("click", () => {
-  loginModal.style.display = "flex";
-});
+// // Update UI depending on login state
+// function updateUI() {
+//   if (isLoggedIn) {
+//     gameContainer.style.display = "grid";
+//     authButtons.style.display = "none";
+//     logoutBtn.style.display = "block";
+//   } else {
+//     gameContainer.style.display = "none";
+//     authButtons.style.display = "block";
+//     logoutBtn.style.display = "none";
+//   }
+// }
 
-signupBtn.addEventListener("click", () => {
-  signupModal.style.display = "flex";
-});
+// // Simulate login from other page
+// // (example: you can set localStorage.setItem("isLoggedIn","true") after login)
+// function login() {
+//   isLoggedIn = true;
+//   localStorage.setItem("isLoggedIn", "true");
+//   updateUI();
+// }
 
-closeBtns.forEach(btn => {
-  btn.addEventListener("click", () => {
-    loginModal.style.display = "none";
-    signupModal.style.display = "none";
-  });
-});
+// // Logout
+// logoutBtn.addEventListener("click", () => {
+//   isLoggedIn = false;
+//   localStorage.setItem("isLoggedIn", "false");
+//   updateUI();
+// });
 
-window.addEventListener("click", (e) => {
-  if (e.target === loginModal) {
-    loginModal.style.display = "none";
-  }
-  if (e.target === signupModal) {
-    signupModal.style.display = "none";
-  }
-});
+// // On page load, set UI correctly
+// updateUI();
+
+
+// let a = 2 
+// let b = 2
+
+// if(a == b){
+// console.log(`a + b : ${a+b}`);
+// }else{
+// console.log('not equal');
+
+// }
+
+// let data = a+b  == 4 ? 'equal' : "not equal" 
+
+// console.log(data);
+

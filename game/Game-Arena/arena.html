@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Game Arena</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  
+  <div id="main-content" class="blurred">
+    <header>
+      <span class="logo">🎮 Game Arena</span>
+      <div id="profile" style="display: none;">
+        <img id="profile-pic" alt="Profile" />
+        <span id="profile-name"></span>
+        <button id="logout-btn" class="btn small">Logout</button>
+      </div>
+    </header>
+
+    <div class="game-container">
+      <a href="game3/game3.html">
+        <div class="game-card">
+          <img src="rock paper.jpg" alt="">
+          <h2>✊✋✌ Stone Paper Scissors</h2>
+          <p>Play the classic hand game!</p>
+          <button class="btn">Play</button>
+        </div>
+      </a>
+
+      <a href="game1/game.html">
+        <div class="game-card">
+          <img src="randomnumber-crunchify.webp" alt="">
+          <h2>🔢 Random Number Guess</h2>
+          <p>Guess the number between 1 and 100.</p>
+          <button class="btn">Play</button>
+        </div>
+      </a>
+
+      <a href="game2/game2.html">
+        <div class="game-card">
+          <img src="guess-the-number.png" alt="">
+          <h2>🎯 Number Game</h2>
+          <p>Challenge yourself with numbers!</p>
+          <button class="btn">Play</button>
+        </div>
+      </a>
+
+      <a href="#">
+        <div class="game-card">
+          <h2>🚀 More Games Coming</h2>
+          <button class="btn">See More</button>
+        </div>
+      </a>
+    </div>
+  </div>
+
+  <!-- Login  -->
+  <div id="login-modal" class="modal">
+    <div class="modal-card">
+      <h2>Login</h2>
+      <form id="loginForm">
+        <input type="text" id="login-username" placeholder="👤 Username" required>
+        <input type="password" id="login-password" placeholder="🔑 Password" required>
+        <button type="submit" class="btn">Login</button>
+      </form>
+      <p>Don’t have an account? <span id="show-signup">Sign up</span></p>
+    </div>
+  </div>
+
+  <!-- Signup  -->
+  <div id="signup-modal" class="modal" style="display:none;">
+    <div class="modal-card">
+      <h2>Sign Up</h2>
+      <form id="signupForm">
+        <input type="text" id="signup-username" placeholder="👤 Username" required>
+        <input type="tel" id="signup-number" placeholder="📱 Number" required>
+        <input type="file" id="signup-image" accept="image/*" required>
+        <input type="password" id="signup-password" placeholder="🔑 Password" required>
+        <button type="submit" class="btn">Sign Up</button>
+      </form>
+      <p>Already have an account? <span id="show-login">Login</span></p>
+    </div>
+  </div>
+
+  <script src="test.js"></script>
+</body>
+</html>

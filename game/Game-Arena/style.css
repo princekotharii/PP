@@ -1,0 +1,224 @@
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: radial-gradient(circle, #141E30, #243B55);
+  color: white;
+  margin: 0;
+  padding: 0;
+}
+
+
+.blurred {
+  filter: blur(8px);
+  pointer-events: none;
+}
+
+/* Header */
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #0f3460;
+  padding: 15px 30px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+  position: sticky;
+  top: 0;
+}
+
+header .logo {
+  font-size: 1.5em;
+  font-weight: bold;
+}
+
+#profile {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+#profile img {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  border: 2px solid white;
+  object-fit: cover;
+}
+
+#profile-name {
+  font-weight: bold;
+}
+
+/* Buttons */
+.btn {
+  padding: 10px 20px;
+  border-radius: 30px;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+  background: linear-gradient(90deg, #3F5EFB, #FC466B);
+  color: white;
+  transition: 0.3s;
+}
+
+.btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 10px #FC466B;
+}
+
+.btn.small {
+  padding: 5px 12px;
+  font-size: 0.8em;
+}
+
+.btn.primary {
+  margin-top: 15px;
+  width: 100%;
+}
+
+/* Games Grid */
+.game-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 25px;
+  padding: 40px;
+}
+
+.game-card {
+  background: #1a1a2e;
+  border-radius: 20px;
+  padding: 20px;
+  text-align: center;
+  transition: 0.3s;
+  cursor: pointer;
+}
+
+.game-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.7);
+}
+
+.game-card img {
+  width: 100%;
+  height: 160px;
+  border-radius: 12px;
+  object-fit: cover;
+}
+
+.game-card h2 {
+  margin: 15px 0 8px;
+}
+
+.game-card a, 
+.game-container a {
+  text-decoration: none;
+  color: white;
+}
+
+/* ===== MODALS ===== */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+}
+
+.modal-card {
+  background: #1a1a2e;
+  padding: 30px;
+  border-radius: 20px;
+  text-align: center;
+  box-shadow: 0 0 20px #3F5EFB;
+  width: 320px;
+}
+
+.modal-card h2 {
+  margin-bottom: 15px;
+}
+
+.modal-card input {
+  width: 90%;
+  padding: 12px;
+  margin: 8px 0;
+  border-radius: 10px;
+  border: none;
+  outline: none;
+}
+
+.modal-card p {
+  margin-top: 10px;
+}
+
+.modal-card span {
+  color: #3F5EFB;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+/* Fade-in for modals */
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.9); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.modal {
+  animation: fadeIn 0.4s ease;
+}
+
+/* Slide-up cards */
+@keyframes slideUp {
+  from { transform: translateY(30px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.game-card {
+  animation: slideUp 0.6s ease forwards;
+  opacity: 0;
+}
+
+.game-card:nth-child(1) { animation-delay: 0.1s; }
+.game-card:nth-child(2) { animation-delay: 0.2s; }
+.game-card:nth-child(3) { animation-delay: 0.3s; }
+.game-card:nth-child(4) { animation-delay: 0.4s; }
+
+/* Glow effect for buttons */
+@keyframes glow {
+  0% { box-shadow: 0 0 5px #FC466B, 0 0 10px #FC466B; }
+  50% { box-shadow: 0 0 20px #3F5EFB, 0 0 40px #FC466B; }
+  100% { box-shadow: 0 0 5px #FC466B, 0 0 10px #FC466B; }
+}
+
+.btn:hover {
+  animation: glow 1.5s infinite alternate;
+  transform: scale(1.08);
+}
+
+/* Smooth blur transition */
+.blurred {
+  transition: filter 0.4s ease;
+}
+
+/* Profile picture pop */
+@keyframes popIn {
+  from { transform: scale(0.5); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+#profile img {
+  animation: popIn 0.5s ease;
+}
+
+/* Floating logo effect */
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-6px); }
+  100% { transform: translateY(0px); }
+}
+
+header .logo {
+  animation: float 3s ease-in-out infinite;
+}
